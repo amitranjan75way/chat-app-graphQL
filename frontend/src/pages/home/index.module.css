@@ -1,20 +1,46 @@
 .container {
-  display: flex;
-  height: 100vh; /* Full height of the viewport */
-  background-color: #f7f8fc; /* Light background */
+  text-align: center;
+  margin-top: 50px;
 }
 
-.chatList {
-  width: 30%; /* Fixed width for the chat list */
-  background-color: #ffffff; /* White background */
-  border-right: 1px solid #ddd; /* Light border for separation */
-  overflow-y: auto; /* Scrollable content */
+.title {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 30px;
 }
 
-.chatBox {
-  width: 70%; /* Remaining space for the chat box */
-  background-color: #ffffff; /* White background */
+.image {
+  max-width: 220px;
+  height: auto;
+  margin-bottom: 40px;
+  opacity: 0.9;
+}
+
+.buttons {
   display: flex;
-  flex-direction: column; /* Stack content vertically */
-  overflow: hidden; /* Hide overflow content */
+  justify-content: center;
+  gap: 20px;
+}
+
+.chatButton, .getStartedButton {
+  background-color: var(--primary-orange);
+  color: white;
+  padding: 15px 32px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.chatButton:hover, .getStartedButton:hover {
+  background-color: #45a049;
+}
+
+.getStartedButton {
+  background-color: #008CBA;
+}
+
+.getStartedButton:hover {
+  background-color: #007bb5;
 }

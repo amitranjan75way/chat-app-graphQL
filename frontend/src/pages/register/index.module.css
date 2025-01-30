@@ -1,11 +1,4 @@
-:root {
-  --primary-orange: #fc8019;
-  --secondary-orange: #ff914d;
-  --gray: #f5f5f5;
-  --dark-gray: #333;
-  --white: #fff;
-  --input-border: #ddd;
-}
+
 
 .signupContainer {
   display: flex;

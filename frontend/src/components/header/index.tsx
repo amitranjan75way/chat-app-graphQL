@@ -1,6 +1,6 @@
 import React from 'react';
 import style from './index.module.css';
-import logo from '../../accets/logo.jpg';
+import logo from '../../assets/logo.png';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../../store/store';
 import { logout } from '../../store/reducers/authReducer';
