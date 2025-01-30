@@ -15,6 +15,8 @@ export const generateTokens = (payload: Payload) => {
   const refreshToken = jwt.sign(payload, REFRESH_TOKEN_SECRET, { expiresIn: REFRESH_TOKEN_EXPIRY });
   return { accessToken, refreshToken };
 };
+
+
  
 export const validateToken = (token: string, secret: string) => {
   try {

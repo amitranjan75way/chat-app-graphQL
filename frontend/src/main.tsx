@@ -10,17 +10,21 @@ import { Provider } from "react-redux";
 import { store } from "./store/store.ts";
 import { ToastContainer } from "react-toastify";
 import { Toaster } from 'react-hot-toast';
+import client from "./graphql/appoloClient.ts";
+import { ApolloProvider } from "@apollo/client";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <BrowserRouter>
-      <ThemeProvider theme={theme}>
-        <Provider store={store}>
-          <ToastContainer />
-          <Toaster/>
-          <App />
-        </Provider>
-      </ThemeProvider>
-    </BrowserRouter>
+    <ApolloProvider client={client}>
+      <BrowserRouter>
+        <ThemeProvider theme={theme}>
+          <Provider store={store}>
+            <ToastContainer />
+            <Toaster />
+            <App />
+          </Provider>
+        </ThemeProvider>
+      </BrowserRouter>
+    </ApolloProvider>
   </React.StrictMode>
 );

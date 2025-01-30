@@ -63,17 +63,17 @@ const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;
  * @throws {HttpError} If the user already exists or refresh token update fails.
  */
 exports.registerUser = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const data = req.body;
+    let data = req.body;
     const isUserExist = yield userService.isUserExistByEamil(data.email);
     if (isUserExist) {
         throw (0, http_errors_1.default)(409, "User already Exits");
     }
+    data.profilePic = `https://ui-avatars.com/api/${data.name}?background=random`;
     const result = yield userService.createUser(data);
     const payload = {
         _id: result._id,
         name: result.name,
         email: result.email,
-        role: result.role,
     };
     const { refreshToken, accessToken } = jwthelper.generateTokens(payload);
     const user = yield userService.updateRefreshToken(result._id, refreshToken);
@@ -93,8 +93,8 @@ exports.registerUser = (0, express_async_handler_1.default)((req, res) => __awai
     const response = {
         _id: user._id,
         name: user.name,
+        profilePic: user.profilePic,
         email: user.email,
-        role: user.role,
         refreshToken,
         accessToken
     };
@@ -117,7 +117,6 @@ exports.loginUser = (0, express_async_handler_1.default)((req, res) => __awaiter
             _id: user._id,
             name: user.name,
             email: user.email,
-            role: user.role,
         };
         const { refreshToken, accessToken } = jwthelper.generateTokens(payload);
         const updatedUser = yield userService.updateRefreshToken(user._id, refreshToken);
@@ -137,8 +136,8 @@ exports.loginUser = (0, express_async_handler_1.default)((req, res) => __awaiter
         const response = {
             _id: user._id,
             name: user.name,
+            profilePic: user.profilePic,
             email: user.email,
-            role: user.role,
             refreshToken,
             accessToken
         };
@@ -189,7 +188,6 @@ exports.updateAccessToken = (0, express_async_handler_1.default)((req, res) => _
         _id: user._id,
         name: user.name,
         email: user.email,
-        role: user.role,
     };
     const { accessToken } = jwthelper.generateTokens(newPayload);
     res.cookie("accessToken", accessToken, {
@@ -200,8 +198,8 @@ exports.updateAccessToken = (0, express_async_handler_1.default)((req, res) => _
     const response = {
         _id: user._id,
         name: user.name,
+        profilePic: user.profilePic,
         email: user.email,
-        role: user.role,
         refreshToken,
         accessToken
     };

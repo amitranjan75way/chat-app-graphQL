@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.isAdmin = exports.isUser = exports.auth = void 0;
+exports.auth = void 0;
 const config_hepler_1 = require("../helper/config.hepler");
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const http_errors_1 = __importDefault(require("http-errors"));
@@ -30,33 +30,12 @@ exports.auth = (0, express_async_handler_1.default)((req, res, next) => __awaite
         });
     }
     const user = yield (0, jwt_helper_1.decodeAccessToken)(token);
+    console.log("auth payload : ", user);
     if (!user) {
         throw (0, http_errors_1.default)(401, {
             message: "Invalid or expired token",
         });
     }
-    // Check if user has a valid role
-    if (!user.role || !["USER", "ADMIN"].includes(user.role)) {
-        throw (0, http_errors_1.default)(403, {
-            message: "Invalid or unauthorized user role",
-        });
-    }
     req.user = user;
     next();
 }));
-const isUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = req.user;
-    if (!user || user.role !== "USER") {
-        next((0, http_errors_1.default)(403, "Only User can access this route"));
-    }
-    next();
-});
-exports.isUser = isUser;
-const isAdmin = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = req.user;
-    if (!user || user.role !== "ADMIN") {
-        next((0, http_errors_1.default)(403, "only Admin can access this route"));
-    }
-    next();
-});
-exports.isAdmin = isAdmin;

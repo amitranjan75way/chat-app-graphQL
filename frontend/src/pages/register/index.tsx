@@ -3,7 +3,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import style from './index.module.css';
-import { useRegisterUserMutation } from '../../services/authApi';
+import { useSignUp } from '../../graphql/user.graphql'; // Import your custom hook
 import { login } from '../../store/reducers/authReducer';
 import toast from 'react-hot-toast';
 import ButtonLoader from '../../components/buttonLoader';
@@ -11,7 +11,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../store/store';
 import { Eye, EyeOff } from 'lucide-react'; // For password visibility toggle icons
 
-// Define the type for the form data
 type FormData = {
   name: string;
   email: string;
@@ -25,12 +24,11 @@ const schema = yup.object({
   password: yup
     .string()
     .required('Password is required')
-    .min(1, 'Password must be at least 8 characters')
+    .min(2, 'Password must be at least 2 characters')
 });
 
 const SignupForm: React.FC = () => {
   const navigate = useNavigate();
-  const [registerUser, { isLoading, isError, error }] = useRegisterUserMutation();
   const dispatch = useAppDispatch();
   const { register, handleSubmit, formState: { errors }, reset } = useForm<FormData>({
     resolver: yupResolver(schema)
@@ -38,41 +36,38 @@ const SignupForm: React.FC = () => {
 
   const [showPassword, setShowPassword] = useState(false);
 
-  // SignupForm.tsx (updated)
+  // Use the custom sign-up hook
+  const [signUp, { loading, error }] = useSignUp();
 
-const onSubmit: SubmitHandler<FormData> = async (data) => {
-  try {
-    const response = await registerUser(data).unwrap();
+  const onSubmit: SubmitHandler<FormData> = async (data) => {
+    try {
+      const response = await signUp(data);
 
-    dispatch(login({
-      name: response.data.name,
-      email: response.data.email,
-      role: response.data.role,
-      accessToken: response.data.accessToken,
-      refreshToken: response.data.refreshToken,
-      groups: response.data.groups, // Store groups on registration
-    }));
+      const userData = response.data.signUp;
 
-    window.localStorage.setItem('name', response.data.name);
-    window.localStorage.setItem('email', response.data.email);
-    window.localStorage.setItem('accessToken', response.data.accessToken);
-    window.localStorage.setItem('refreshToken', response.data.refreshToken);
-    window.localStorage.setItem('isAuthenticated', 'true');
-    window.localStorage.setItem('groups', JSON.stringify(response.data.groups)); // Store groups in localStorage
+      // Dispatch user info and tokens to Redux store
+      // dispatch(login({
+      //   name: userData.name,
+      //   email: userData.email,
+      //   profilePic: userData.profilePic,
+      //   accessToken: userData.accessToken,
+      //   refreshToken: userData.refreshToken,
+      // }));
 
-    toast.success('User Registered successfully');
-    reset();
-    navigate('/');
-  } catch (err) {
-    if ((err as any)?.data?.err_code === 409) {
-      toast.error('User already exists');
+      // Store the data in localStorage
+      // window.localStorage.setItem('name', userData.name);
+      // window.localStorage.setItem('email', userData.email);
+      // window.localStorage.setItem('accessToken', userData.accessToken);
+      // window.localStorage.setItem('refreshToken', userData.refreshToken);
+      // window.localStorage.setItem('isAuthenticated', 'true');
+
+      toast.success('User Registered successfully');
+      reset();
+      navigate('/');
+    } catch (err) {
+      toast.error('An error occurred during registration');
     }
-    if((err as any)?.data?.err_code === 500) {
-      toast.error('Something went wrong')
-    }
-  }
-};
-
+  };
 
   return (
     <div className={style.signupContainer}>
@@ -114,12 +109,12 @@ const onSubmit: SubmitHandler<FormData> = async (data) => {
             {errors.password && <p className={style.error}>{errors.password.message}</p>}
           </div>
 
-          {isError && error && (
-            <p className={style.error}>{error.data?.message || 'An error occurred!'}</p>
+          {error && (
+            <p className={style.error}>{error.message || 'An error occurred!'}</p>
           )}
 
-          <button type="submit" className={style.registerButton} disabled={isLoading}>
-            {isLoading ? <ButtonLoader /> : <span>Register</span>}
+          <button type="submit" className={style.registerButton} disabled={loading}>
+            {loading ? <ButtonLoader /> : <span>Register</span>}
           </button>
           <p>
             Already have an account?{' '}

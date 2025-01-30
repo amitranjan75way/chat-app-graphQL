@@ -40,15 +40,13 @@ const UserSchema = new mongoose_1.default.Schema({
         type: String,
         required: true,
     },
-    role: {
+    profilePic: {
         type: String,
-        required: true,
-        enum: ["USER", "ADMIN"],
-        default: "USER",
+        default: ""
     },
     refreshToken: {
         type: String,
-    },
+    }
 }, { timestamps: true });
 UserSchema.pre("save", function (next) {
     return __awaiter(this, void 0, void 0, function* () {
