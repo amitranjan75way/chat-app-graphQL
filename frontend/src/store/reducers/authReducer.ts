@@ -11,7 +11,6 @@ interface AuthState {
   refreshToken: string;
   isAuthenticated: boolean;
   loading: boolean;
-  groups: string[];
 }
 
 const initialState: AuthState = {
@@ -22,7 +21,6 @@ const initialState: AuthState = {
   refreshToken: window.localStorage.getItem('refreshToken') || "",
   isAuthenticated: window.localStorage.getItem('isAuthenticated') === 'true' || false,
   loading: true,
-  groups: JSON.parse(window.localStorage.getItem('groups') || '[]'), // Retrieve groups from localStorage
 };
 
 export const authSlice = createSlice({
@@ -54,7 +52,6 @@ export const authSlice = createSlice({
       state.role = action.payload.role;
       state.accessToken = action.payload.accessToken;
       state.refreshToken = action.payload.refreshToken;
-      state.groups = action.payload.groups; // Store the groups
       state.isAuthenticated = true;
     },
     logout: (state) => {
@@ -63,7 +60,6 @@ export const authSlice = createSlice({
       state.role = "";
       state.accessToken = "";
       state.refreshToken = "";
-      state.groups = [];
       state.isAuthenticated = false;
     },
   },

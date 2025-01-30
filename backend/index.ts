@@ -1,5 +1,4 @@
 import express, { type Express, type Request, type Response } from "express";
-import { server, app } from './app/socket/index'; // Adjusted import
 import bodyParser from "body-parser";
 import morgan from "morgan";
 import http from "http";
@@ -27,6 +26,7 @@ declare global {
 }
 
 const port = Number(process.env.PORT) ?? 5000;
+const app = express();
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -61,9 +61,8 @@ const initApp = async (): Promise<void> => {
   // Error handler middleware
   app.use(errorHandler);
 
-  // Start server on the same port as HTTP server
-  server.listen(port, () => {
-    console.log("Server is running on port", port);
+  http.createServer(app).listen(port, () => {
+    console.log("Server is runnuing on port", port);
     console.log(`Swagger docs available at http://localhost:${port}/api-docs`);
   });
 };

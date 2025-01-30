@@ -6,6 +6,7 @@ import Login from './pages/login';
 import UpdatePassword from "./pages/updatePassword";
 import PrivateRoute from "./components/auth/PrivateRoute";
 import { useAppSelector } from "./store/store";
+import Chat from "./pages/chat";
 
 
 function App() {
@@ -18,7 +19,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/update-password" element={<UpdatePassword />} />
-        
+        <Route path="/chat" element={<Chat/>} />
       </Route>
     </Routes>
   );

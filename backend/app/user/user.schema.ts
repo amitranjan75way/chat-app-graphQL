@@ -36,11 +36,7 @@ const UserSchema = new mongoose.Schema<IUser>(
     },  
     refreshToken: {
       type: String,
-    },
-    groups: [{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Group'
-    }]
+    }
   },
   { timestamps: true }
 );

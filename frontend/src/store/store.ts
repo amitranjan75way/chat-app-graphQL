@@ -1,7 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 import authReducer from "./reducers/authReducer";
-import groupList from "./reducers/groupList";
 import messageReducer from "./reducers/messageReducer";
 import { authApi } from "../services/authApi";
 import { userApi } from "../services/userApi"; 
@@ -10,7 +9,6 @@ import { chatApi } from '../services/chatApi';
 export const store = configureStore({
   reducer: {
     auth: authReducer,
-    groupList: groupList,
     messageReducer: messageReducer,
     [authApi.reducerPath]: authApi.reducer,
     [userApi.reducerPath]: userApi.reducer, 

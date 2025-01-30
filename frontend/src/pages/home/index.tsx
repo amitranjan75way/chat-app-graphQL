@@ -11,7 +11,6 @@ const Home = () => {
 
   return (
     <div className={style.container}>
-      {/* Animated Welcome Text */}
       <motion.h1
         className={style.title}
         initial={{ opacity: 0 }}
@@ -20,8 +19,6 @@ const Home = () => {
       >
         Welcome to Sout-Chat
       </motion.h1>
-
-      {/* Animated Image */}
       <motion.img
         src={chat}
         alt="Chat Image"
@@ -30,8 +27,6 @@ const Home = () => {
         animate={{ opacity: 1 }}
         transition={{ duration: 1.5 }}
       />
-
-      {/* Buttons with Animation */}
       <motion.div
         className={style.buttons}
         initial={{ opacity: 0 }}
@@ -40,7 +35,7 @@ const Home = () => {
       >
         {isAuthenticated
           ?
-          <button className={style.chatButton}>
+          <button className={style.chatButton} onClick={()=>navigate('/chat')}>
             Start Chat
           </button>
           :
